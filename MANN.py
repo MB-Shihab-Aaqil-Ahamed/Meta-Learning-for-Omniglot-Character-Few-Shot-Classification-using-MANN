@@ -55,28 +55,27 @@ class MANN(tf.keras.Model):
         Returns:
             preds: [B, K+1, N, N] predictions
         """
-        #############################
-        #### YOUR CODE GOES HERE ####
-        # print(input_labels)
-        # print(">>> input_images.shape", input_images.shape)
+        
+        print(input_labels)
+        print(">>> input_images.shape", input_images.shape)
 
         _, K, N, I = input_images.shape
 
         # Zero last N example, corresponding to the K+1 sample
         # Note the -1: so num of dimensions keeps equal
         in_zero = input_labels - input_labels[:, -1:, :, :]
-        # tf.print(in_zero)
+        tf.print(in_zero)
 
         input = tf.keras.layers.Concatenate(axis=3)([input_images, in_zero])
-        # print(input.shape)
+        print(input.shape)
 
         input = tf.reshape(input, [-1, K*N, N + 28*28])
-        # print(input.shape)
+        print(input.shape)
 
         out = self.layer2(self.layer1(input))
         out = tf.reshape(out, [-1, K, N, N])
-        # print('> out:', out)
-        #############################
+        print('> out:', out)
+        
         return out
 
 def run_experiment(num_classes=5, num_samples_per_class=1, meta_batch_size=16, epochs=5e5, verbose=True):
@@ -94,7 +93,7 @@ def run_experiment(num_classes=5, num_samples_per_class=1, meta_batch_size=16, e
 
     optim = tf.train.AdamOptimizer(0.001)
     optimizer_step = optim.minimize(loss)
-    # print("... Starts training ...")
+    print("... Starts training ...")
     last_time = datetime.datetime.now()
     print("Time:", last_time.time())
 
@@ -111,25 +110,25 @@ def run_experiment(num_classes=5, num_samples_per_class=1, meta_batch_size=16, e
         # Train and test:
         for step in range(int(epochs)):
             i, l = data_generator.sample_batch('train', meta_batch_size)
-            # print("i.shape:",i.shape)
+            print("i.shape:",i.shape)
 
             feed = {ims: i.astype(np.float32), labels: l.astype(np.float32)}
-            # print("feed[ims].shape:", feed[ims].shape)
+            print("feed[ims].shape:", feed[ims].shape)
             _, ls = sess.run([optimizer_step, loss], feed)
 
             if step % 100 == 0 or step == int(epochs)-1:
-                # print("*" * 5 + "Iter " + str(step) + "*" * 5)
+                print("*" * 5 + "Iter " + str(step) + "*" * 5)
                 i, l = data_generator.sample_batch('test', 1000)
                 feed = {ims: i.astype(np.float32),
                         labels: l.astype(np.float32)}
                 pred, tls = sess.run([out, loss], feed)
-                # print("Train Loss:", ls, "Test Loss:", tls)
+                print("Train Loss:", ls, "Test Loss:", tls)
                 pred = pred.reshape(
                     -1, num_samples_per_class + 1,
                     num_classes, num_classes)
                 pred = pred[:, -1, :, :].argmax(2)
                 l = l[:, -1, :, :].argmax(2)
-                # print("Test Accuracy", (1.0 * (pred == l)).mean())
+                print("Test Accuracy", (1.0 * (pred == l)).mean())
                 # For plotting
                 steps.append(step)
                 train_losses.append(ls)
