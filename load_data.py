@@ -91,7 +91,7 @@ class DataGenerator(object):
                                             num_train:num_train + num_val]
         self.metatest_character_folders = character_folders[
                                             num_train + num_val:]
-        # print("Data generator initialized. Shape: [B, {}, {}, 784]".format(self.num_samples_per_class, self.num_classes))
+        print("Data generator initialized. Shape: [B, {}, {}, 784]".format(self.num_samples_per_class, self.num_classes))
 
     def sample_batch(self, batch_type, batch_size, shuffle=True):
         """
@@ -111,9 +111,6 @@ class DataGenerator(object):
             folders = self.metaval_character_folders
         else:
             folders = self.metatest_character_folders
-
-        #############################
-        #### YOUR CODE GOES HERE ####
         
         samples = np.ndarray(shape=(4,))
 
@@ -176,19 +173,17 @@ class DataGenerator(object):
         all_image_batches = np.stack(all_image_batches)
         all_label_batches = np.stack(all_label_batches)
 
-        # print(">> ", all_image_batches.shape)
-        # print(">> ", all_label_batches.shape)
-
-        #############################
+        print(">> ", all_image_batches.shape)
+        print(">> ", all_label_batches.shape)
 
         return all_image_batches, all_label_batches
 
 
 num_classes=5
-num_samples_per_class=3
+num_samples_per_class=2
 
 data = DataGenerator(num_classes, num_samples_per_class)
 
 images, labels = data.sample_batch('train', batch_size=2, shuffle=False)
-# print("Batch of images of shape:", images.shape)
-# print("Batch of labels of shape:", labels.shape)
+print("Batch of images of shape:", images.shape)
+print("Batch of labels of shape:", labels.shape)
