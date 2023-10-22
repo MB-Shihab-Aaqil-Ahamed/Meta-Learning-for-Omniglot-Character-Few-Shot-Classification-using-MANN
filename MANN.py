@@ -24,13 +24,13 @@ def loss_function(preds, labels):
     """
 
     # Only on last N example, corresponding to the K+1 sample
-    # print("> Predds:", preds[:, -1:, :, :])
-    # print("> Labels:", labels[:, -1:, :, :])
+    print("> Predds:", preds[:, -1:, :, :])
+    print("> Labels:", labels[:, -1:, :, :])
     loss = tf.keras.losses.categorical_crossentropy(y_true=labels[:, -1:, :, :],
                                                     y_pred=preds[:, -1:, :, :],
                                                     from_logits=True)
     loss = tf.reduce_sum(loss)
-    # print(loss)
+    print(loss)
     return loss
 
 class MANN(tf.keras.Model):
