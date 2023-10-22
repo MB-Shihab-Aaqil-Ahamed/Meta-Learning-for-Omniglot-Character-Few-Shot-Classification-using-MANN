@@ -22,8 +22,6 @@ def loss_function(preds, labels):
     Returns:
         scalar loss
     """
-    #############################
-    #### YOUR CODE GOES HERE ####
 
     # Only on last N example, corresponding to the K+1 sample
     # print("> Predds:", preds[:, -1:, :, :])
@@ -34,7 +32,6 @@ def loss_function(preds, labels):
     loss = tf.reduce_sum(loss)
     # print(loss)
     return loss
-    #############################
 
 class MANN(tf.keras.Model):
 
